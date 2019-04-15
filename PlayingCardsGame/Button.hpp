@@ -1,20 +1,19 @@
 #pragma once
 
 template <class Collision, bool CenterIsFunc>
-class Button
+struct Button
 {
-private:
 
-	const Collision c;
-	const std::function<void()> f;
-	const Color color;
-	const Font font;
-	const String text;
-	const Color tcolor;
-	
+	Collision c;
+	std::function<void()> f;
+	Color color;
+	Font font;
+	String text;
+	Color tcolor;
+
+private:
 	int clicked;
 	bool oncursor;
-
 public:
 
 	/// <summary>
@@ -54,6 +53,8 @@ public:
 	{
 
 	}
+
+	Button() {}
 
 	void Update()
 	{

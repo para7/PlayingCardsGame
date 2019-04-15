@@ -8,71 +8,52 @@ private:
 
 	const Font fScore;
 
-	Button<RoundRect, true> hit, stand;
+	Button<RoundRect, true> hit, stand, doubledown, surrender;
 
 	struct Info
 	{
 		Array<PlayingCard::Card> hand;
-		
-		int power(bool dealer = false) const
+
+		int power(bool dealer = false) const;
+
+		inline bool isBlackjack() const
 		{
-			int sum = 0;
-			int ace = 0;
-
-			for (const auto& x : hand)
-			{
-				if (dealer && !x.isFaceSide)
-				{
-					continue;
-				}
-
-				if (x.isAce())
-				{
-					sum += 11;
-					ace++;
-				}
-				else if (x.isJack() || x.isQueen() || x.isKing())
-				{
-					sum += 10;
-				}
-				else
-				{
-					sum += x.rank;
-				}
-			}
-
-			for (int i = 0; i < ace; ++i)
-			{
-				if (21 < sum)
-				{
-					sum -= 10;
-				}
-			}
-
-
-			return sum;
+			return power() == 21 && hand.size() == 2;
 		}
 
-		bool isBlackjack() const
+		inline bool isBurst() const
 		{
-			if (power() == 21 && hand.size() == 2)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		bool isBurst() const
-		{
-			if (power() > 21)
-			{
-				return true;
-			}
-			return false;
+			return power() > 21;
 		}
 
 	} player, dealer;
 
+
+	struct DrawEffect
+	{
+		const Vec2 startpos, targetpos;
+		Info& info;
+		PlayingCard::Pack pack;
+		double ease;
+
+		DrawEffect(const Vec2& _targetpos, Info& _info, const Pack& _pack)
+			: targetpos(_targetpos)
+			, startpos(targetpos.movedBy(Window::Width(), 0))
+			, info(_info)
+			, pack(_pack)
+		{
+		}
+
+		void update()
+		{
+			//イージングして0になったら実行
+		}
+
+		void draw()
+		{
+			//背面描画
+		}
+	};
 
 	Deck deck;
 
